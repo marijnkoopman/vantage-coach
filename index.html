@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+    <title>Vantage Coach Lapboard</title>
+
+    <link type="text/css" rel="stylesheet" href="style.css" />
+
+    <!-- Development version, includes helpful console warnings
+                Don't forget to replace before entering production!-->
+    <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+
+        <button id="openSetup" @click="showSetup = true"></button>
+        <div id="main">
+
+            <div id="lapTime" v-if="!showSetup" v-bind:style="{ 'color': riderColor }">{{lapTime}}</div>
+
+            <div id="setup" v-if="showSetup" @close="showSetup = false">
+                <div id="setupColor">
+                    <span v-for="color in colors" :color="color" :class="color">
+                        <button class="bigDot" :color="color" v-bind:style="{ 'background-color': color }"
+                            @click="riderColor = color ; showSetup = false ;">
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        new Vue({
+            el: " #app", data: {
+                colors: ['white', 'red', 'yellow', 'blue'],
+                lapTime: 0,
+                showSetup: false,
+                riderColor: "white"
+            }
+        }); </script>
+
+</body>
+
+</html>
