@@ -2,12 +2,25 @@
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background-color: #000;
-    color: #fff;
+    font-family: sans-serif;
+}
+swiper-slide {
+    width: 100vw;
+    height: 100vw;
+    margin: auto;
+}
+.swiper-container {
+    width: 100vw;
+    height: 100vh;
 }
 #lapTime {
-    font-size: 40vw;
+    font-size: 80vh;
     font-weight: bold;
+    text-align: center;
+}
+.lapTimeColor {
+    width: 100vw;
+    height: 100vh;
 }
 button {
     height: 30px;
@@ -15,4 +28,10 @@ button {
 }
 .bigDot {
     border-radius: 20px;
+}
+.swiper-pagination-v .swiper-pagination-bullet {
+    opacity: 1;
+    box-shadow: 0 0 5px 0px #0000009e;
+    height: 20px;
+    width: 20px;
 }

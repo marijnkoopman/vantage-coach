@@ -6,13 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
-    <title>Vantage Coach Lapboard</title>
+    <title>Vantage Coach - Beyond the Lapboard</title>
 
     <link type="text/css" rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css"/>
 
-    <!-- Development version, includes helpful console warnings
+    <!-- Swipe Navigation dependencies -->
+    <script type="text/javascript" src="https://unpkg.com/swiper/js/swiper.min.js"></script>
+    <!-- VUE Development version, includes helpful console warnings
                 Don't forget to replace before entering production!-->
-    <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
+                <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue-awesome-swiper@3.1.2/dist/vue-awesome-swiper.js"></script>
+    <script type="text/javascript">
+        Vue.use(window.VueAwesomeSwiper)
+    </script>
 </head>
 
 <body>
@@ -21,7 +28,28 @@
         <button id="openSetup" @click="showSetup = true"></button>
         <div id="main">
 
-            <div id="lapTime" v-if="!showSetup" v-bind:style="{ 'color': riderColor }">{{lapTime}}</div>
+            <swiper :options="swiperOptionh">
+                <swiper-slide>Horizontal Slide 1</swiper-slide>
+                <swiper-slide id="lapTime">
+                    <swiper :options="swiperOptionv">
+                        
+                        <swiper-slide class="lapTimeColor" v-for="color in colors" :color="color">
+                            <button class="colorHint" v-bind:style="{ 'background-color': color }"></button>
+                            <span id="lapTime" v-if="!showSetup">{{lapTime}}</span>
+                        </swiper-slide>
+
+                        <swiper-slide>Vertical Slide 4</swiper-slide>
+                        <div class="swiper-pagination swiper-pagination-v" slot="pagination"></div>
+                    </swiper>
+                </swiper-slide>
+                <swiper-slide>Horizontal Slide 1</swiper-slide>
+                <swiper-slide>Horizontal Slide 2</swiper-slide>
+                <swiper-slide>Horizontal Slide 3</swiper-slide>
+                <swiper-slide>Horizontal Slide 4</swiper-slide>
+                <div class="swiper-pagination swiper-pagination-h" slot="pagination"></div>
+            </swiper>
+
+            <!-- <div id="lapTime" v-if="!showSetup" v-bind:style="{ 'color': riderColor }">{{lapTime}}</div> -->
 
             <div id="setup" v-if="showSetup" @close="showSetup = false">
                 <div id="setupColor">
@@ -37,15 +65,37 @@
     </div>
 
     <script>
-
+        Vue.use(VueAwesomeSwiper)
         new Vue({
-            el: " #app", data: {
+            el: " #app",
+            data: {
+                swiperOptionh: {
+                    spaceBetween: 50,
+                    pagination: {
+                        el: '.swiper-pagination-h',
+                        clickable: true
+                    }
+                },
+                swiperOptionv: {
+                    direction: 'vertical',
+                    spaceBetween: 50,
+                    pagination: {
+                        el: '.swiper-pagination-v',
+                        clickable: true
+                    }
+                },
                 colors: ['white', 'red', 'yellow', 'blue'],
-                lapTime: 0,
+                lapTime: 7.3,
                 showSetup: false,
                 riderColor: "white"
-            }
-        }); </script>
+            },
+            computed: {
+                swiperA() {
+                    return this.$refs.awesomeSwiperA.swiper
+                },
+            },
+        }); 
+    </script>
 
 </body>
 
