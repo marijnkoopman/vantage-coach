@@ -9,14 +9,15 @@
     <title>Vantage Coach - Beyond the Lapboard</title>
 
     <link type="text/css" rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css" />
 
     <!-- Swipe Navigation dependencies -->
     <script type="text/javascript" src="https://unpkg.com/swiper/js/swiper.min.js"></script>
     <!-- VUE Development version, includes helpful console warnings
                 Don't forget to replace before entering production!-->
-                <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue-awesome-swiper@3.1.2/dist/vue-awesome-swiper.js"></script>
+    <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/vue-awesome-swiper@3.1.2/dist/vue-awesome-swiper.js"></script>
     <script type="text/javascript">
         Vue.use(window.VueAwesomeSwiper)
     </script>
@@ -25,20 +26,20 @@
 <body>
     <div id="app">
 
-        <button id="openSetup" @click="showSetup = true"></button>
+        <button id="openSetup" @click="showSetup = true"><img src="./graphics/menu.svg"></button>
+        <button id="colorHint" v-bind:style="{ 'background-color': activeColor }"></button>
+
         <div id="main">
 
             <swiper :options="swiperOptionh">
                 <swiper-slide>Horizontal Slide 1</swiper-slide>
                 <swiper-slide id="lapTime">
-                    <swiper :options="swiperOptionv">
-                        
+                    <swiper :options="swiperOptionv" @slide-change="changeSwiperIndex" ref="colorSwiper">
+
                         <swiper-slide class="lapTimeColor" v-for="color in colors" :color="color">
-                            <button class="colorHint" v-bind:style="{ 'background-color': color }"></button>
                             <span id="lapTime" v-if="!showSetup">{{lapTime}}</span>
                         </swiper-slide>
 
-                        <swiper-slide>Vertical Slide 4</swiper-slide>
                         <div class="swiper-pagination swiper-pagination-v" slot="pagination"></div>
                     </swiper>
                 </swiper-slide>
@@ -49,14 +50,18 @@
                 <div class="swiper-pagination swiper-pagination-h" slot="pagination"></div>
             </swiper>
 
-            <!-- <div id="lapTime" v-if="!showSetup" v-bind:style="{ 'color': riderColor }">{{lapTime}}</div> -->
-
             <div id="setup" v-if="showSetup" @close="showSetup = false">
-                <div id="setupColor">
-                    <span v-for="color in colors" :color="color" :class="color">
-                        <button class="bigDot" :color="color" v-bind:style="{ 'background-color': color }"
-                            @click="riderColor = color ; showSetup = false ;">
-                    </span>
+                <div id="setupInner">
+                    <button id="closeSetup" @click="showSetup = false"><img src="./graphics/x.svg"></button>
+                    <h2>Vantage Coach</h2>
+                    <hr>
+                    <h3>Pick rider color:</h3>
+                    <div id="setupColor">
+                        <span v-for="color in colors" :color="color" :class="color">
+                            <button class="bigDot" :color="color" v-bind:style="{ 'background-color': color }"
+                                @click="activeColor = color ; showSetup = false ;">
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -65,10 +70,15 @@
     </div>
 
     <script>
+        const colorMap = ['white', 'red', 'yellow', 'blue'];
         Vue.use(VueAwesomeSwiper)
         new Vue({
             el: " #app",
             data: {
+                colors: colorMap,
+                lapTime: 7.3,
+                showSetup: false,
+                activeColor: "white",
                 swiperOptionh: {
                     spaceBetween: 50,
                     pagination: {
@@ -81,19 +91,31 @@
                     spaceBetween: 50,
                     pagination: {
                         el: '.swiper-pagination-v',
-                        clickable: true
+                        clickable: true,
+                        dynamicBullets: true,
+                        renderBullet(index, className) {
+                            let renderedColor = colorMap[index];
+                            return `<span class="${className} swiper-pagination-bullet-color" style="
+    background-color: ${renderedColor};"></span>`
+                        }
                     }
-                },
-                colors: ['white', 'red', 'yellow', 'blue'],
-                lapTime: 7.3,
-                showSetup: false,
-                riderColor: "white"
+                }
             },
             computed: {
                 swiperA() {
                     return this.$refs.awesomeSwiperA.swiper
                 },
             },
+            methods: {
+                changeSwiperIndex() {
+                    activeColor: console.log(this.$refs.colorSwiper.swiper.activeIndex)
+                }
+            },
+            filters: {
+                indexToColor: function (index) {
+                    if (!isNaN(index)) return colorMap[index]
+                }
+            }
         }); 
     </script>
 
