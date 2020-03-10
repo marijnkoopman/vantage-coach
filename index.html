@@ -4,6 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Coach">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
     <title>Vantage Coach - Beyond the Lapboard</title>
@@ -32,21 +36,18 @@
         <div id="main">
 
             <swiper :options="swiperOptionh">
-                <swiper-slide>Horizontal Slide 1</swiper-slide>
+                <swiper-slide><h2>Startlist & Results</h2></swiper-slide>
                 <swiper-slide id="lapTime">
                     <swiper :options="swiperOptionv" @slide-change="changeSwiperIndex" ref="colorSwiper">
 
                         <swiper-slide class="lapTimeColor" v-for="color in colors" :color="color">
-                            <span id="lapTime" v-if="!showSetup">{{lapTime}}</span>
+                            <span class="lapTime" v-if="!showSetup">{{lapTime}}</span>
                         </swiper-slide>
 
                         <div class="swiper-pagination swiper-pagination-v" slot="pagination"></div>
                     </swiper>
                 </swiper-slide>
-                <swiper-slide>Horizontal Slide 1</swiper-slide>
-                <swiper-slide>Horizontal Slide 2</swiper-slide>
-                <swiper-slide>Horizontal Slide 3</swiper-slide>
-                <swiper-slide>Horizontal Slide 4</swiper-slide>
+                <swiper-slide><h2>Live Timing & Predicted Time</h2></swiper-slide>
                 <div class="swiper-pagination swiper-pagination-h" slot="pagination"></div>
             </swiper>
 
@@ -59,7 +60,7 @@
                     <div id="setupColor">
                         <span v-for="color in colors" :color="color" :class="color">
                             <button class="bigDot" :color="color" v-bind:style="{ 'background-color': color }"
-                                @click="activeColor = color ; showSetup = false ;">
+                                @click="activeIndex = colors.indexOf(color) ; switchToIndex() ; showSetup = false ;">
                         </span>
                     </div>
                 </div>
@@ -76,11 +77,12 @@
             el: " #app",
             data: {
                 colors: colorMap,
-                lapTime: 7.3,
-                showSetup: false,
-                activeColor: "white",
+                lapTime: 73,
+                showSetup: true,
+                activeIndex: 0,
                 swiperOptionh: {
-                    spaceBetween: 50,
+                    spaceBetween: 0,
+                    initialSlide: 1,
                     pagination: {
                         el: '.swiper-pagination-h',
                         clickable: true
@@ -88,7 +90,7 @@
                 },
                 swiperOptionv: {
                     direction: 'vertical',
-                    spaceBetween: 50,
+                    spaceBetween: 0,
                     pagination: {
                         el: '.swiper-pagination-v',
                         clickable: true,
@@ -105,10 +107,16 @@
                 swiperA() {
                     return this.$refs.awesomeSwiperA.swiper
                 },
+                activeColor() {
+                    return colorMap[this.activeIndex]
+                }
             },
             methods: {
                 changeSwiperIndex() {
-                    activeColor: console.log(this.$refs.colorSwiper.swiper.activeIndex)
+                    this.activeIndex = this.$refs.colorSwiper.swiper.activeIndex;
+                },
+                switchToIndex() {
+                    this.$refs.colorSwiper.swiper.activeIndex = this.activeIndex;
                 }
             },
             filters: {
