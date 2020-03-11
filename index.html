@@ -25,6 +25,15 @@
     <script type="text/javascript">
         Vue.use(window.VueAwesomeSwiper)
     </script>
+    <script type="text/javascript">
+        webSocket = new WebSocket("wss://events.emandovantage.com/v1/competitions");
+        webSocket.onmessage = function (event) {
+            console.log(event.data);
+        }
+        webSocket.onerror = function (errorMessage) {
+            console.log(errorMessage);
+        }
+    </script>
 </head>
 
 <body>
@@ -97,8 +106,8 @@
                         dynamicBullets: true,
                         renderBullet(index, className) {
                             let renderedColor = colorMap[index];
-                            return `<span class="${className} swiper-pagination-bullet-color" style="
-    background-color: ${renderedColor};"></span>`
+                            return `<span class="${className} swiper-pagination-bullet-color"
+                            style="background-color: ${renderedColor};"></span>`
                         }
                     }
                 }
