@@ -26,14 +26,22 @@
         Vue.use(window.VueAwesomeSwiper)
     </script>
     <script type="text/javascript">
-        webSocket = new WebSocket("wss://events.emandovantage.com/v1/competitions");
+        webSocket = new WebSocket("ws://127.0.0.1:4000");
         webSocket.onmessage = function (event) {
-            console.log(event.data);
+            console.log(JSON.parse(event.data));
         }
         webSocket.onerror = function (errorMessage) {
             console.log(errorMessage);
         }
-    </script>
+        webSocket2 = new WebSocket("ws://127.0.0.1:5000");
+        webSocket2.onmessage = function (event) {
+            console.log(JSON.parse(event.data));
+        }
+        webSocket2.onerror = function (errorMessage) {
+            console.log(errorMessage);
+        }
+
+</script>
 </head>
 
 <body>
